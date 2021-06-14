@@ -1,4 +1,4 @@
-//https://teachablemachine.withgoogle.com/models/0uhb1ILEo/
+//https://teachablemachine.withgoogle.com/models/yhYPIkMob/
 
 Webcam.set({
     width : 350,
@@ -22,7 +22,7 @@ function take_snapshot() {
 
 console.log("ml5 version = ", ml5.version);
 
-var classifier = ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/0uhb1ILEo/model.json",modelLoaded);
+var classifier = ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/yhYPIkMob/",modelLoaded);
 
 function modelLoaded() {
     console.log("modelLoaded");
@@ -38,4 +38,53 @@ function speak() {
     utterthis = new SpeechSynthesisUtterance(speak_data1 + speak_data2)
 
     synth.speak(utterthis);
+}
+
+function Predict() {
+    img=document.getElementById("captured_image");
+    
+    classifier.classify(img,gotResult); 
+
+}
+
+function gotResult(error,results) {
+    if (error) {
+        console.error(error);
+    }
+    else{
+        console.log(results);
+        document.getElementById("result_emotion_name").innerHTML = results[0].label;
+        document.getElementById("result_emotion_name2").innerHTML = results[1].label;
+
+        prediction1= results[0].label;
+        prediction2= results[1].label;
+
+        speak()
+
+        if(results[0].label == "awsome") {
+            document.getElementById("update_emoji").innerHTML = "&#128077;";
+        }
+
+        if(results[0].label == "victory") {
+            document.getElementById("update_emoji").innerHTML = "&#9996;";
+        }
+
+        if(results[0].label == "ok") {
+            document.getElementById("update_emoji").innerHTML = "&#128076;";
+        }
+
+
+        if(results[1].label == "awsome") {
+            document.getElementById("update_emoji2").innerHTML = "&#128077;";
+        }
+
+        if(results[1].label == "victory") {
+            document.getElementById("update_emoji2").innerHTML = "&#9996;";
+        }
+
+        if(results[1].label == "ok") {
+            document.getElementById("update_emoji2").innerHTML = "&#128076;";
+        }
+    }
+    
 }
